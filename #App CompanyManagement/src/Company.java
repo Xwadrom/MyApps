@@ -91,7 +91,7 @@ public class Company {
     }
 
     public static void databaseWriter(String key, String firstName, String lastName, double salary) {
-        try (var fileWriter = new FileWriter(CompanyApp.EMPLOYEE_DATABASE_TXT, true); var writer = new BufferedWriter(fileWriter)) {
+        try (var fileWriter = new FileWriter(CompanyApp.EMPLOYEE_DATABASE, true); var writer = new BufferedWriter(fileWriter)) {
             writer.write(key);
             writer.newLine();
             writer.write(firstName);
@@ -101,7 +101,7 @@ public class Company {
             writer.write(Double.toString(salary));
             writer.newLine();
         } catch (IOException e) {
-            System.err.println("Nie udało się zapisać pliku " + CompanyApp.EMPLOYEE_DATABASE_TXT);
+            System.err.println("Nie udało się zapisać pliku " + CompanyApp.EMPLOYEE_DATABASE);
         }
     }
 
@@ -120,7 +120,7 @@ public class Company {
     }
 
     public void databaseReader(Company company) {
-        try (var fileReader = new FileReader(CompanyApp.EMPLOYEE_DATABASE_TXT); var reader = new BufferedReader(fileReader)) {
+        try (var fileReader = new FileReader(CompanyApp.EMPLOYEE_DATABASE); var reader = new BufferedReader(fileReader)) {
             String key;
             while ((key = reader.readLine()) != null) {
                 company.employeeMap.put(key, new Employee(reader.readLine(), reader.readLine(), Double.valueOf(reader.readLine())));
