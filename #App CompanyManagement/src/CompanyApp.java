@@ -17,7 +17,6 @@ public class CompanyApp {
         company.databaseReader(company);
         StringBuilder sb1 = company.databaseMenu();
         company.databaseInteraction(company, sc1, sb1);
-        company.employeeMap.remove("marta suchecka");
 
         System.out.println("Ilość pracowników w bazie danych: " + company.employeeMap.size());
     }
