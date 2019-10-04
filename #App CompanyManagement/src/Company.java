@@ -10,9 +10,10 @@ public class Company {
         StringBuilder sb1 = new StringBuilder();
         sb1.append("Dostępne opcje programu: " + "\n");
         sb1.append("1 - Dodanie nowego pracownika." + "\n");
-        sb1.append("2 - wyszukanie informacji o pracowniku na podstawie imienia i nazwiska po czym wyświetlenie danych pracownika na ekranie (imię, nazwisko, wypłata.)" + "\n");
-        sb1.append("3 - usuwanie pracownika z bazy danych." + "\n");
-        sb1.append("4 - wyjście z programu.");
+        sb1.append("2 - Wyszukanie informacji o pracowniku na podstawie imienia i nazwiska." + "\n");
+        sb1.append("3 - Usuwanie pracownika z bazy danych." + "\n");
+        sb1.append("4 - Wyświetlenie ilości pracowników w bazie danych." + "\n");
+        sb1.append("5 - Wyjście z programu.");
         return sb1;
     }
 
@@ -28,24 +29,25 @@ public class Company {
             }
 
             switch (CompanyApp.option) {
-                case CompanyApp.ADD_EMPLOYER:
+                case CompanyApp.ADD_EMPLOYEE:
                     try {
                         System.out.println("Podaj imię pracownika: ");
-                        String firstName = sc1.nextLine();
+                        String firstName = sc1.next();
                         System.out.println("Podaj nazwisko pracownika: ");
-                        String lastName = sc1.nextLine();
+                        String lastName = sc1.next();
                         System.out.println("Wprowadź wypłatę pracownika brutto, wartości dziesiętne muszą być po przecinku: ");
                         double salary = sc1.nextDouble();
                         sc1.nextLine();
                         String key = firstName.toLowerCase() + " " + lastName.toLowerCase();
                         company.employeeMap.put(key, new Employee(firstName, lastName, salary));
                         databaseWriter(key, firstName, lastName, salary);
+                        System.out.println("Dodano pracownika do bazy danych.");
                     } catch (InputMismatchException e) {
                         sc1.nextLine();
                         System.err.println("Wprowadzono błędne dane spróbuj ponownie");
                     }
                     break;
-                case CompanyApp.SEARCH_EMPLOYER:
+                case CompanyApp.SEARCH_EMPLOYEE:
                     Set<String> keys = company.employeeMap.keySet();
                     if (keys.size() == 0) {
                         System.err.println("Baza danych jest pusta.");
@@ -53,21 +55,14 @@ public class Company {
                     }
                     System.out.println("Podaj imię i nazwisko pracownika, oddzielając je spacją: ");
                     String nameSearch = sc1.nextLine().trim().toLowerCase();
-                    List<String> toSearch = new ArrayList<>();
-                    for (String tmp : keys) {
-                        if (tmp.toLowerCase().equals(nameSearch.toLowerCase())) {
-                            toSearch.add(tmp);
-                        }
-                    }
                     try {
-                        System.out.println("Wynik wyszukiwania pracownika: " + company.employeeMap.get(toSearch.get(0)).getFirstname() + " "
-                                + company.employeeMap.get(toSearch.get(0)).getLastname() + " " + company.employeeMap.get(toSearch.get(0)).getSalary());
-                    } catch (IndexOutOfBoundsException e) {
-                        System.err.println("Brak podanego pracownika w bazie danych.");
+                        System.out.println("Wynik wyszukiwania pracownika: " + company.employeeMap.get(nameSearch).getFirstname() + " " + company.employeeMap.get(nameSearch).getLastname() + " " + company.employeeMap.get(nameSearch).getSalary());
+                    } catch (NullPointerException e) {
+                        System.err.println("Brak pracownika w bazie danych.");
                     }
                     System.out.println();
                     break;
-                case CompanyApp.DELETE_EMPLOYER:
+                case CompanyApp.DELETE_EMPLOYEE:
                     Set<String> keys2 = company.employeeMap.keySet();
                     if (keys2.size() == 0) {
                         System.err.println("Baza danych jest pusta.");
@@ -75,25 +70,17 @@ public class Company {
                     }
                     System.out.println("Podaj imię i nazwisko pracownika, oddzielając je spacją: ");
                     String nameSearch2 = sc1.nextLine().trim().toLowerCase();
-                    List<String> toRemove = new ArrayList<>();
-                    for (String tmp : keys2) {
-                        if (tmp.equals(nameSearch2.toLowerCase())) {
-                            toRemove.add(tmp);
-                            System.out.println("Usuwam pracownika: " + toRemove.get(0));
-                            // company.employeeMap.remove(tmp);
-                        }
-                    }
-                    try {
-                        company.employeeMap.remove(toRemove.get(0));
-                    } catch (IndexOutOfBoundsException e) {
-                        System.err.println("Brak podanego pracownika w bazie danych.");
-                    }
+                    if (company.employeeMap.get(nameSearch2) != null) {
+                        System.out.println("Usuwam pracownika: " + nameSearch2.toUpperCase());
+                        company.employeeMap.remove(nameSearch2);
+                    } else
+                        System.err.println("Brak pracownika w bazie danych.");
                     System.out.println("Ilość pracowników w bazie danych: " + company.employeeMap.size());
                     System.err.println("Wychodzę do głównego menu.");
                     System.out.println();
 
                     try (var fileWriter = new FileWriter(CompanyApp.EMPLOYEE_DATABASE); var writer = new BufferedWriter(fileWriter)) {
-                        for(String tmp : keys2){
+                        for (String tmp : keys2) {
                             writer.write(tmp);
                             writer.newLine();
                             writer.write(company.employeeMap.get(tmp).getFirstname());
@@ -103,10 +90,12 @@ public class Company {
                             writer.write(Double.toString(company.employeeMap.get(tmp).getSalary()));
                             writer.newLine();
                         }
-
                     } catch (IOException e) {
                         System.err.println("Nie udało się zapisać pliku " + CompanyApp.EMPLOYEE_DATABASE);
                     }
+                    break;
+                case CompanyApp.COUNT_EMPLOYEES:
+                    System.err.println("Ilość pracowników w bazie danych: " + company.employeeMap.size()+"\n");
                     break;
                 case CompanyApp.EXIT:
                     System.out.println("Do zobaczenia!");
@@ -147,7 +136,7 @@ public class Company {
             }
         }
         if (fileExists)
-            System.out.println("Plik " + file + " gotowy do użytku." + "\n");
+            System.out.println("Plik " + file + " gotowy do użytku.");
     }
 
     public void databaseReader(Company company) {
@@ -156,7 +145,7 @@ public class Company {
             while ((key = reader.readLine()) != null) {
                 company.employeeMap.put(key, new Employee(reader.readLine(), reader.readLine(), Double.valueOf(reader.readLine())));
             }
-            System.out.println("Ilość pracowników w bazie danych: " + company.employeeMap.size());
+            System.out.println("Ilość pracowników w bazie danych: " + company.employeeMap.size() + "\n");
         } catch (Exception e) {
             System.err.println("Błąd odczytu z pliku.");
             e.printStackTrace();

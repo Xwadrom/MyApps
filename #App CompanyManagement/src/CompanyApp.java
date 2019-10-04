@@ -3,10 +3,11 @@ import java.util.Scanner;
 public class CompanyApp {
 
     public static final String EMPLOYEE_DATABASE = "EmployeeDatabase.txt";
-    public static final int ADD_EMPLOYER = 1;
-    public static final int SEARCH_EMPLOYER = 2;
-    public static final int DELETE_EMPLOYER = 3;
-    public static final int EXIT = 4;
+    public static final int ADD_EMPLOYEE = 1;
+    public static final int SEARCH_EMPLOYEE = 2;
+    public static final int DELETE_EMPLOYEE = 3;
+    public static final int COUNT_EMPLOYEES = 4;
+    public static final int EXIT = 5;
     public static int option = 0;
 
     public static void main(String[] args) {
@@ -18,7 +19,6 @@ public class CompanyApp {
         StringBuilder sb1 = company.databaseMenu();
         company.databaseInteraction(company, sc1, sb1);
 
-        System.out.println("Ilość pracowników w bazie danych: " + company.employeeMap.size());
     }
 
 

@@ -1,20 +1,16 @@
-robert osuch
-Robert
-Osuch
-5899.0
-anna nowak
-Anna
-Nowak
-10988.0
 stefan oromski
 Stefan
 Oromski
 2344.0
-marta suchecka
-Marta
-Suchecka
-6599.88
-adam kowalski
-Adam
-Kowalski
-5700.45
+anna nowak
+Anna
+Nowak
+10999.83
+klaudia sztos
+Klaudia
+Sztos
+4533.99
+robert osuch
+Robert
+Osuch
+5988.99
