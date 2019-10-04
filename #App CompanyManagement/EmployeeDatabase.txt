@@ -2,10 +2,6 @@ robert osuch
 Robert
 Osuch
 5899.0
-piotr mazur
-Piotr
-Mazur
-4355.0
 anna nowak
 Anna
 Nowak
@@ -14,11 +10,11 @@ stefan oromski
 Stefan
 Oromski
 2344.0
-pawel nowak
-Pawel
-Nowak
-4555.88
 marta suchecka
 Marta
 Suchecka
 6599.88
+adam kowalski
+Adam
+Kowalski
+5700.45

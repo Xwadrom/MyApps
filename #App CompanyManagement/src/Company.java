@@ -53,12 +53,18 @@ public class Company {
                     }
                     System.out.println("Podaj imię i nazwisko pracownika, oddzielając je spacją: ");
                     String nameSearch = sc1.nextLine().trim().toLowerCase();
+                    List<String> toSearch = new ArrayList<>();
                     for (String tmp : keys) {
-                        if (tmp.toUpperCase().equals(nameSearch.toUpperCase())) {
-                            System.out.println("Wynik wyszukiwania pracownika: " + company.employeeMap.get(tmp).getFirstname() + " " + company.employeeMap.get(tmp).getLastname() + " " + company.employeeMap.get(tmp).getSalary());
+                        if (tmp.toLowerCase().equals(nameSearch.toLowerCase())) {
+                            toSearch.add(tmp);
                         }
                     }
-                    System.err.println("Wychodzę do głównego menu.");
+                    try {
+                        System.out.println("Wynik wyszukiwania pracownika: " + company.employeeMap.get(toSearch.get(0)).getFirstname() + " "
+                                + company.employeeMap.get(toSearch.get(0)).getLastname() + " " + company.employeeMap.get(toSearch.get(0)).getSalary());
+                    } catch (IndexOutOfBoundsException e) {
+                        System.err.println("Brak podanego pracownika w bazie danych.");
+                    }
                     System.out.println();
                     break;
                 case CompanyApp.DELETE_EMPLOYER:
@@ -69,13 +75,38 @@ public class Company {
                     }
                     System.out.println("Podaj imię i nazwisko pracownika, oddzielając je spacją: ");
                     String nameSearch2 = sc1.nextLine().trim().toLowerCase();
+                    List<String> toRemove = new ArrayList<>();
                     for (String tmp : keys2) {
-                        if (tmp.toUpperCase().equals(nameSearch2.toUpperCase())) {
-                            company.employeeMap.remove(tmp);
+                        if (tmp.equals(nameSearch2.toLowerCase())) {
+                            toRemove.add(tmp);
+                            System.out.println("Usuwam pracownika: " + toRemove.get(0));
+                            // company.employeeMap.remove(tmp);
                         }
                     }
+                    try {
+                        company.employeeMap.remove(toRemove.get(0));
+                    } catch (IndexOutOfBoundsException e) {
+                        System.err.println("Brak podanego pracownika w bazie danych.");
+                    }
+                    System.out.println("Ilość pracowników w bazie danych: " + company.employeeMap.size());
                     System.err.println("Wychodzę do głównego menu.");
                     System.out.println();
+
+                    try (var fileWriter = new FileWriter(CompanyApp.EMPLOYEE_DATABASE); var writer = new BufferedWriter(fileWriter)) {
+                        for(String tmp : keys2){
+                            writer.write(tmp);
+                            writer.newLine();
+                            writer.write(company.employeeMap.get(tmp).getFirstname());
+                            writer.newLine();
+                            writer.write(company.employeeMap.get(tmp).getLastname());
+                            writer.newLine();
+                            writer.write(Double.toString(company.employeeMap.get(tmp).getSalary()));
+                            writer.newLine();
+                        }
+
+                    } catch (IOException e) {
+                        System.err.println("Nie udało się zapisać pliku " + CompanyApp.EMPLOYEE_DATABASE);
+                    }
                     break;
                 case CompanyApp.EXIT:
                     System.out.println("Do zobaczenia!");
@@ -92,13 +123,13 @@ public class Company {
 
     public static void databaseWriter(String key, String firstName, String lastName, double salary) {
         try (var fileWriter = new FileWriter(CompanyApp.EMPLOYEE_DATABASE, true); var writer = new BufferedWriter(fileWriter)) {
-            writer.write(key);
+            writer.write(key.trim());
             writer.newLine();
-            writer.write(firstName);
+            writer.write(firstName.trim());
             writer.newLine();
-            writer.write(lastName);
+            writer.write(lastName.trim());
             writer.newLine();
-            writer.write(Double.toString(salary));
+            writer.write(Double.toString(salary).trim());
             writer.newLine();
         } catch (IOException e) {
             System.err.println("Nie udało się zapisać pliku " + CompanyApp.EMPLOYEE_DATABASE);

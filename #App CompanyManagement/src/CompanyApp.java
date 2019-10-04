@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class CompanyApp {
 
-    public final static String EMPLOYEE_DATABASE = "EmployeeDatabase.txt";
+    public static final String EMPLOYEE_DATABASE = "EmployeeDatabase.txt";
     public static final int ADD_EMPLOYER = 1;
     public static final int SEARCH_EMPLOYER = 2;
     public static final int DELETE_EMPLOYER = 3;
@@ -20,10 +20,6 @@ public class CompanyApp {
 
         System.out.println("Ilość pracowników w bazie danych: " + company.employeeMap.size());
     }
-
-
-
-
 
 
 }
