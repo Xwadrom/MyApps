@@ -39,9 +39,13 @@ public class Company {
                         double salary = sc1.nextDouble();
                         sc1.nextLine();
                         String key = firstName.toLowerCase() + " " + lastName.toLowerCase();
-                        company.employeeMap.put(key, new Employee(firstName, lastName, salary));
-                        databaseWriter(key, firstName, lastName, salary);
-                        System.out.println("Dodano pracownika do bazy danych.");
+                        if (company.employeeMap.get(key.trim()) != null) {
+                            System.err.println("Pracownik jest juz w bazie danych");
+                        } else {
+                            company.employeeMap.put(key, new Employee(firstName, lastName, salary));
+                            databaseWriter(key, firstName, lastName, salary);
+                            System.err.println("Dodano pracownika do bazy danych.");
+                        }
                     } catch (InputMismatchException e) {
                         sc1.nextLine();
                         System.err.println("Wprowadzono błędne dane spróbuj ponownie");
