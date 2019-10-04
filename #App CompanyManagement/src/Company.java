@@ -39,7 +39,7 @@ public class Company {
                         double salary = sc1.nextDouble();
                         sc1.nextLine();
                         String key = firstName.toLowerCase() + " " + lastName.toLowerCase();
-                        if (company.employeeMap.get(key.trim()) != null) {
+                        if (company.employeeMap.containsKey(key.trim())) {
                             System.err.println("Pracownik jest juz w bazie danych");
                         } else {
                             company.employeeMap.put(key, new Employee(firstName, lastName, salary));
