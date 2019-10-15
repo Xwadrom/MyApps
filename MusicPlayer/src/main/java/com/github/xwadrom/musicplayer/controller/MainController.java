@@ -6,6 +6,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.MouseEvent;
 
 public class MainController {
 
@@ -40,7 +41,24 @@ public class MainController {
     private Slider progressSlider;
 
     public void initialize(){
-        System.out.println("MainController created.");
+        configureButtons();
+        configureVolume();
     }
 
+    private void configureVolume(){
+        volumeSlider.addEventFilter(MouseEvent.MOUSE_PRESSED, event ->
+                System.out.println("Wciśnięto przycik na suwaku głośności"));
+    }
+
+    private void configureButtons(){
+        previousButton.setOnAction(event -> System.out.println("Poprzednia piosenka"));
+        nextButton.setOnAction(event -> System.out.println("Następna piosenka"));
+        playButton.setOnAction(event -> {
+            if(playButton.isSelected()){
+                System.out.println("Play");
+            }else{
+                System.out.println("Stop");
+            }
+        });
+    }
 }
