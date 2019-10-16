@@ -2,14 +2,17 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <BorderPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.github.xwadrom.musicplayer.controller.MenuPaneController">
+            fx:controller="com.github.xwadrom.musicplayer.controller.MainController">
     <top>
-        <fx:include source="menuPane.fxml"/>
+        <fx:include source="menuPane.fxml" fx:id="menuPane"/>
     </top>
     <center>
-        <fx:include source="contentPane.fxml"/>
+        <fx:include source="contentPane.fxml" fx:id="contentPane"/>
     </center>
     <bottom>
-        <fx:include source="controlPane.fxml"/>
+        <fx:include source="controlPane.fxml" fx:id="controlPane"/>
     </bottom>
 </BorderPane>
+
+
+
